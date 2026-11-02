@@ -3,6 +3,10 @@
 // detection issue) that affected numbers already rolled up. Does NOT touch
 // Leads Log Status (Pending/Rejected) — only the rollup bookkeeping.
 function resetRollups() {
+  withScriptLock_(resetRollupsLocked_);
+}
+
+function resetRollupsLocked_() {
   const periodsSheet = getOrCreateSheet_(SHEET_PERIODS, [
     'Period ID', 'City', 'Period Start', 'Period End',
     'Total Leads', 'Rejected Leads', 'Net Leads',
@@ -39,6 +43,10 @@ function resetRollups() {
 // once this is tracking real invoices, since it forgets which leads were
 // already reconciled.
 function resetEverything() {
+  withScriptLock_(resetEverythingLocked_);
+}
+
+function resetEverythingLocked_() {
   const leadsSheet = getOrCreateSheet_(SHEET_LEADS, [
     'Date Received', 'Thread ID', 'Message ID', 'City', 'Status',
     'Retour Date', 'Retour Note', 'Renewal Period ID'

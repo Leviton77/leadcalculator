@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "test": "node --test test/*.test.js",
     "login": "clasp login",
     "push": "clasp push",
     "open": "clasp open",

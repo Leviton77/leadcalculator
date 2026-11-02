@@ -18,11 +18,18 @@ existing Google Workspace plan).
   *"Renouvellement automatique bloc de soumissions"*. When one arrives, it
   closes out the current period (per city), counts total leads / rejected /
   net, computes cost using the **Config** tab rates, and writes a row to
-  **Renewal Periods** — including a check against the known invoice total
-  (574.88 CAD default).
+  **Renewal Periods**. The invoice amount is read from the renewal email
+  (the last "Total" amount in it), falling back to 574.88 CAD if none is
+  found, and **Match?** compares it with the combined cost of every city
+  in that renewal.
+- **Late RETOURs**: if you reply RETOUR after the lead was already rolled
+  into a period, that period's counts and cost are recomputed.
 - **Ottawa**: not distinguishable in the email yet. When you're ready, apply
   the Gmail label `LeadsCalc/City-Ottawa` to a lead thread and it will be
-  logged as Ottawa instead of Gatineau. (See "Open items" below.)
+  logged as Ottawa instead of Gatineau. The label can be added any time
+  before the next renewal email. (See "Open items" below.)
+- Runs never overlap: if "Run now" is clicked during a scheduled run, it
+  waits up to 30 seconds and then skips.
 
 ## One-time setup
 
@@ -64,6 +71,12 @@ existing Google Workspace plan).
 That's it — from here it runs on its own. You can also click
 `Leads Calculator > Run now` any time to trigger a check immediately instead
 of waiting for the next scheduled run.
+
+## Tests
+
+`npm test` runs the script against in-memory fakes of Gmail and Sheets
+(plain Node 18+, no extra dependencies). Tests live in `test/` and are not
+pushed to Apps Script.
 
 ## Filling in costs
 

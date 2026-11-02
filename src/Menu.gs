@@ -9,7 +9,10 @@ function onOpen() {
 }
 
 function runAll() {
-  ingestLeads();
-  detectRetours();
-  detectRenewalAndRollup();
+  withScriptLock_(() => {
+    ingestLeads();
+    refreshCities();
+    detectRetours();
+    detectRenewalAndRollup();
+  });
 }
