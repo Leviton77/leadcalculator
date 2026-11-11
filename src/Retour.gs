@@ -12,6 +12,7 @@ function detectRetours() {
   const retourLabel = getOrCreateLabel_(LABEL_RETOUR_PROCESSED);
 
   const data = sheet.getDataRange().getValues();
+  const periodsToRecount = {};
 
   for (let i = 1; i < data.length; i++) {
     if (data[i][4] !== 'Pending') continue;
@@ -32,5 +33,12 @@ function detectRetours() {
     sheet.getRange(row, 7).setValue(retourMsg.getPlainBody().substring(0, 300));
 
     thread.addLabel(retourLabel);
+
+    // Already rolled into a renewal period: that period counted this lead
+    // as billable, so recount it now that it's rejected.
+    const periodId = data[i][7];
+    if (periodId) periodsToRecount[periodId] = true;
   }
+
+  Object.keys(periodsToRecount).forEach(recountPeriod_);
 }

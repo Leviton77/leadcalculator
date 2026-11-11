@@ -23,3 +23,24 @@ function findRowByThreadId_(sheet, threadId) {
   }
   return -1;
 }
+
+// Runs fn only if no other run of this script is in progress (e.g. the
+// 15-minute trigger and a manual "Run now" at the same moment), so the
+// same lead can't be logged twice. Waits up to 30s, then skips.
+function withScriptLock_(fn) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) {
+    console.warn('Leads Calculator: another run is in progress, skipping this one.');
+    try {
+      SpreadsheetApp.getActiveSpreadsheet().toast('Another run is in progress. Try again in a minute.');
+    } catch (e) {
+      // No UI (time-based trigger) — the log line above is enough.
+    }
+    return;
+  }
+  try {
+    fn();
+  } finally {
+    lock.releaseLock();
+  }
+}
