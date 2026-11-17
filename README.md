@@ -98,3 +98,9 @@ Ottawa/ON — adjust if wrong). Once filled in, new rollups in
   rollup logic currently applies to whichever cities have counted leads
   since their own last renewal, so either pattern should work, but worth
   confirming once real Ottawa emails start arriving.
+
+
+## Отчёт для голосового пульта
+
+- [Инструкция по отчётам](docs/pult-reporting.md)
+- [Текущий статус проекта](STATUS.md)
